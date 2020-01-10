@@ -17,6 +17,12 @@ const UserSchema=new mongoose.Schema({
         minLength:5,
         trim: true
     },
+    code:{
+        type:String
+    },
+    username:{
+        type:String
+    }
 });
 
 //user authentication

@@ -56,15 +56,12 @@ router.post('/save',upload.single('productImage'),(req,res)=>{
 
 //get single products or items by id
 router.patch('/product/:productId',upload.single('imageFile'),(req, res) => {
-    // We want to upload a image in a product specified by productId
     Product.findOne({
         _id: req.params.productId
     }).then((product) => {
         if (product) {
-            // product object with the specified conditions was found
             return true;
         }
-        // else - the product object is undefined
         return false;
     }).then((canUploadImage) => {
         if (canUploadImage) {

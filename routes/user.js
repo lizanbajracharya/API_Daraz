@@ -6,7 +6,6 @@ const router = express.Router();
 
 const jwtSecret="lizan";
 
-//user sign up
 router.post('/signup', (req, res, next) => {
     let password = req.body.password;
     bcrypt.hash(password, 10, function (err, hash) {
@@ -17,6 +16,8 @@ router.post('/signup', (req, res, next) => {
         }
         User.create({
             mobileNumber: req.body.mobileNumber,
+            code:req.body.code,
+            username:req.body.username,
             password:hash
         }).then((user) => {
             let token = jwt.sign({ _id: user._id }, jwtSecret);
@@ -25,7 +26,6 @@ router.post('/signup', (req, res, next) => {
     });
 });
 
-//get all registered user or check how many user are there in database
 router.get('/user/list',(req,res)=>{
     User.find({
 
@@ -36,7 +36,6 @@ router.get('/user/list',(req,res)=>{
     })
 });
 
-//user login
 router.post('/user/login', (req, res, next) => {
     User.findOne({ mobileNumber: req.body.mobileNumber })
         .then((user) => {
@@ -45,7 +44,6 @@ router.post('/user/login', (req, res, next) => {
                 err.status = 401;
                 return next(err);
             } else {
-                //inbuilt method of bcrypt to compare plain password with hash password
                 bcrypt.compare(req.body.password, user.password)
                     .then((isCorrectPassowrd) => {
                         if (!isCorrectPassowrd) {
